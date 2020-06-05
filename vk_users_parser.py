@@ -64,7 +64,7 @@ for user in user_list:
     friends_data = vkapi_get_data("friends.get", user_id=user.id)
     friends_ids = friends_data["items"]
     # загружаем друзей только из группы
-    user.friends = [users_by_id[id] for id in friends_ids if id in members_ids]
+    user.friends = set([users_by_id[id] for id in friends_ids if id in members_ids])
 
     friends_loaded += 1
     if friends_loaded % 100 == 0:

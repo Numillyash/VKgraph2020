@@ -6,21 +6,25 @@ class User:
         self.id = id
         self.name = name
         self.is_closed = is_closed
-        self.friends = []  # список друзей (классы user)
+        self.friends = set()  # список друзей (классы user)
 
     def __str__(self):
         return f"Id: {self.id}, Name: {self.name}"
 
-users_list = None
+    def __hash__(self):
+        return self.id
+
+
+_users_list = None
 
 
 # возращает массив всех пользователей
 def get_users():
-    global users_list
+    global _users_list
 
-    if users_list is None:
+    if _users_list is None:
         file = open("users.dat", "rb")
-        users_list = pickle.load(file)
+        _users_list = pickle.load(file)
         file.close()
 
-    return users_list
+    return _users_list

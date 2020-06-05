@@ -12,5 +12,5 @@ for friend in example_user.friends:
 # обьект класса user имеет:
 #   Поле name
 #   Поле id
-#   Поле friends (список)
+#   Поле friends (set друзей)
 #   Поле is_closed (закрыта ли страница)
