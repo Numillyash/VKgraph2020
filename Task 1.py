@@ -12,10 +12,6 @@ count_vert = len(users)
 count_rebri = 0
 for user in users:
     for friend in user.friends:
-        if user.name in (names.name for names in friend.friends):
-            count_rebri += 1
-        else:
-            friend.friends.append(user)
-            count_rebri += 1
+        count_rebri += 0.5
 
 print("Всего вершин: ",count_vert, ", всего ребер: ",int(count_rebri),  ", Отношение: ",count_vert/count_rebri)

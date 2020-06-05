@@ -69,6 +69,11 @@ for user in user_list:
 
 print("User loading successful!")
 
+for user in user_list:
+    for friend in user.friends:
+        if not (user.name in (names.name for names in friend.friends)):
+            friend.friends.append(user)
+
 # сохраняем список пользователей в файл
 sys.setrecursionlimit(10 ** 9)
 file = open("users.dat", "wb")
