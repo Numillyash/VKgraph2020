@@ -30,7 +30,7 @@ while True:
     user_data_list += vkapi_get_data("users.get", user_ids=request_str)
 
     if len(members_ids) % 500 == 0:
-        print(f"Loaded {len(members_ids)} users")
+        print(f"Loaded {len(members_ids)} user names")
 
     if len(members_ids) == group_data["count"]:
         break
@@ -68,14 +68,14 @@ for user in user_list:
 
     friends_loaded += 1
     if friends_loaded % 100 == 0:
-        print(f"Finished loading {friends_loaded} users")
+        print(f"Loaded friends for {friends_loaded} users")
 
 
 # проверяем, что всегда есть обратное ребро
 for user in user_list:
     for friend in user.friends:
         if not (user.id in (ids.id for ids in friend.friends)):
-            friend.friends.append(user)
+            friend.friends.add(user)
 
 print("User loading successful!")
 

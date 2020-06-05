@@ -2,43 +2,45 @@
 from user import *
 import sys
 
-sys.setrecursionlimit(10 ** 9)
-
 users = get_users()
 
-n = min(len(users), 1000)
-class_number = [-1] * n
-classes_graph = [[] for i in range(n)]
+# используем алгоритм СНМ (система непересекающихся множеств, https://e-maxx.ru/algo/dsu)
+n = len(users)
+parent = [i for i in range(n)]
+classes_amount = n  # изначально каждый в классе из 1 человека
 
-# 2 пользователя, у которых >= x общих друзей, принадлежат одному классу
+
+def find_class(v):
+    if parent[v] == v:
+        return v
+    else:
+        parent[v] = find_class(parent[v])
+        return parent[v]
+
+
+def union_classes(a, b):
+    a = find_class(a)
+    b = find_class(b)
+    if a != b:
+        parent[b] = a
+        global classes_amount
+        classes_amount -= 1
+
+
+# 2 знакомых пользователя, у которых >= x общих друзей, принадлежат одному классу
 for i in range(n):
     for j in range(i + 1, n):
+        if find_class(i) == find_class(j):  # они уже в 1 классе
+            continue
+
         user1 = users[i]
         user2 = users[j]
-        if user2 not in user1.friends:
-            continue
-        common_friends = set(user1.friends).intersection(set(user2.friends))
-        if len(common_friends) >= 10:
-            classes_graph[i].append(j)
-            classes_graph[j].append(i)
 
-print("Done!")
-
-
-def dfs(v):
-    for w in classes_graph[v]:
-        if class_number[w] != class_number[v]:
-            class_number[w] = class_number[v]
-            dfs(w)
-
-
-classes_amount = 0
-for i in range(n):
-    if class_number[i] != -1:  # вершина не принадлежит ни одному классу - добавляем ещё один
-        continue
-    classes_amount += 1
-    class_number[i] = classes_amount
-    dfs(i)
+        if user2 in user1.friends:
+            common_friends = set(user1.friends).intersection(set(user2.friends))
+            if len(common_friends) >= 10:
+                union_classes(i, j)
+                if classes_amount % 100 == 0:
+                    print("now it's", classes_amount)
 
 print("classes amount:", classes_amount)
-print("desired amount:", n / 30)

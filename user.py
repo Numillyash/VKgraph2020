@@ -12,7 +12,7 @@ class User:
         return f"Id: {self.id}, Name: {self.name}"
 
     def __hash__(self):
-        return self.id
+        return id(self)
 
 
 _users_list = None
