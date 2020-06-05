@@ -1,3 +1,5 @@
+import sys
+
 from user import *
 import json
 from urllib.request import urlopen
@@ -65,9 +67,10 @@ for user in user_list:
     if friends_loaded % 100 == 0:
         print(f"Finished loading {friends_loaded} users")
 
-print("len of users:", len(user_list))
-# сохраняем список пользователей в файл
 print("User loading successful!")
+
+# сохраняем список пользователей в файл
+sys.setrecursionlimit(10 ** 9)
 file = open("users.dat", "wb")
 pickle.dump(user_list, file)
 file.close()

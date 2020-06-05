@@ -7,6 +7,8 @@ class User:
         self.name = name
         self.friends = []  # список друзей (классы user)
 
+    def __str__(self):
+        return f"Id: {self.id}, name: {self.name}"
 
 users_list = None
 
@@ -16,7 +18,7 @@ def get_users():
     global users_list
 
     if users_list is None:
-        file = open("users.dat", "r")
+        file = open("users.dat", "rb")
         users_list = pickle.load(file)
         file.close()
 
