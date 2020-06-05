@@ -1,6 +1,5 @@
 # Task 3. Попробовать выделить классы (почти полные подграфы графа дружбы).
 from user import *
-import sys
 
 users = get_users()
 
@@ -43,4 +42,4 @@ for i in range(n):
                 if classes_amount % 100 == 0:
                     print("now it's", classes_amount)
 
-print("classes amount:", classes_amount)
+print("classes amount:", classes_amount, "n / 30:", n / 30)

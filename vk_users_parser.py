@@ -1,14 +1,11 @@
-import sys
-
 from user import *
 import json
 from urllib.request import urlopen
-import pickle
 
 
 # возращает словарь с данными из vkapi
 def vkapi_get_data(method, **kwargs):
-    token = "ae05dc6dae05dc6dae05dc6dc9ae77b337aae05ae05dc6df0dffc2a3f8bde9fa2172d79"
+    token = "b3776227b3776227b3776227fcb305108fbb377b3776227edadc2c9b6729a01af3db2fd"
     url = f"https://api.vk.com/method/{method}?access_token={token}&v=5.107"
 
     for key, value in kwargs.items():
@@ -39,8 +36,8 @@ print("User names have been loaded")
 
 
 # создаем объекты класса user
-users_by_id = {}
 user_list = []
+user_by_id = {}
 
 for user_data in user_data_list:
     user_id = user_data["id"]
@@ -49,12 +46,11 @@ for user_data in user_data_list:
         continue
 
     user_name = user_data["first_name"] + " " + user_data["last_name"]
+    user_name = user_name.replace(",", "")
     is_closed = user_data["is_closed"]
     new_user = User(user_id, user_name, is_closed)
-
-    users_by_id[new_user.id] = new_user
     user_list.append(new_user)
-
+    user_by_id[new_user.id] = new_user
 
 # загружаем друзей пользователей
 friends_loaded = 0
@@ -64,8 +60,7 @@ for user in user_list:
     friends_data = vkapi_get_data("friends.get", user_id=user.id)
     friends_ids = friends_data["items"]
     # загружаем друзей только из группы
-    user.friends = set([users_by_id[id] for id in friends_ids if id in members_ids])
-
+    user._friends_ids = [id for id in friends_ids if id in members_ids]
     friends_loaded += 1
     if friends_loaded % 100 == 0:
         print(f"Loaded friends for {friends_loaded} users")
@@ -73,14 +68,19 @@ for user in user_list:
 
 # проверяем, что всегда есть обратное ребро
 for user in user_list:
-    for friend in user.friends:
-        if not (user.id in (ids.id for ids in friend.friends)):
-            friend.friends.add(user)
+    for friend_id in user._friends_ids:
+        friend = user_by_id[friend_id]
+        if user.id not in friend._friends_ids:
+            friend._friends_ids.append(user.id)
 
 print("User loading successful!")
 
 # сохраняем список пользователей в файл
-sys.setrecursionlimit(10 ** 9)
-file = open("users.dat", "wb")
-pickle.dump(user_list, file)
+file = open("users.dat", "w", encoding="utf-8")
+file.write(str(len(user_list)) + "\n")
+
+for user in user_list:
+    user._save(file)
+    file.write("\n")
+
 file.close()
