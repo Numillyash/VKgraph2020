@@ -48,7 +48,7 @@ for user_data in user_data_list:
         members_ids.remove(user_id)
         continue
 
-    user_name = user_data["first_name"] + user_data["last_name"]
+    user_name = user_data["first_name"] + " " + user_data["last_name"]
     new_user = User(user_id, user_name)
 
     users_by_id[new_user.id] = new_user
