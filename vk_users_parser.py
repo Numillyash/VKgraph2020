@@ -44,7 +44,7 @@ user_list = []
 
 for user_data in user_data_list:
     user_id = user_data["id"]
-    if "deactivated" in user_data or user_data["is_closed"]:
+    if "deactivated" in user_data:
         members_ids.remove(user_id)
         continue
 
@@ -67,12 +67,14 @@ for user in user_list:
     if friends_loaded % 100 == 0:
         print(f"Finished loading {friends_loaded} users")
 
-print("User loading successful!")
 
+# проверяем, что всегда есть обратное ребро
 for user in user_list:
     for friend in user.friends:
-        if not (user.name in (names.name for names in friend.friends)):
+        if not (user.id in (ids.id for ids in friend.friends)):
             friend.friends.append(user)
+
+print("User loading successful!")
 
 # сохраняем список пользователей в файл
 sys.setrecursionlimit(10 ** 9)
