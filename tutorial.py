@@ -13,3 +13,4 @@ for friend in example_user.friends:
 #   Поле name
 #   Поле id
 #   Поле friends (список)
+#   Поле is_closed (закрыта ли страница)

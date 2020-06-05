@@ -49,7 +49,8 @@ for user_data in user_data_list:
         continue
 
     user_name = user_data["first_name"] + " " + user_data["last_name"]
-    new_user = User(user_id, user_name)
+    is_closed = user_data["is_closed"]
+    new_user = User(user_id, user_name, is_closed)
 
     users_by_id[new_user.id] = new_user
     user_list.append(new_user)
@@ -58,6 +59,8 @@ for user_data in user_data_list:
 # загружаем друзей пользователей
 friends_loaded = 0
 for user in user_list:
+    if user.is_closed:
+        continue
     friends_data = vkapi_get_data("friends.get", user_id=user.id)
     friends_ids = friends_data["items"]
     # загружаем друзей только из группы

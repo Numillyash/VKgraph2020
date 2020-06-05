@@ -2,9 +2,10 @@ import pickle
 
 
 class User:
-    def __init__(self, id=None, name=None):
+    def __init__(self, id=None, name=None, is_closed=False):
         self.id = id
         self.name = name
+        self.is_closed = is_closed
         self.friends = []  # список друзей (классы user)
 
     def __str__(self):
