@@ -2,7 +2,7 @@
 from user import * #импорт с файла user.py
 
 users = get_users() #получаем список юзеров
-example_user = users[0] #назначаем юзера
+example_user = users[0] #выбираем юзера
 
 print("Name, id:", example_user.name, example_user.id)
 print("Printing friends")
