@@ -8,7 +8,7 @@ class User:
         self.friends = []  # список друзей (классы user)
 
     def __str__(self):
-        return f"Id: {self.id}, name: {self.name}"
+        return f"Id: {self.id}, Name: {self.name}"
 
 users_list = None
 
