@@ -9,8 +9,14 @@ print("Printing friends")
 for friend in example_user.friends:
     print("friend:", friend.name)
 
-# обьект класса user имеет:
+# обьект класса User имеет:
 #   Поле name
 #   Поле id
 #   Поле friends (set друзей)
 #   Поле is_closed (закрыта ли страница)
+
+# Модуль user имеет функции:
+#   get_users()
+#   get_user_by_id(int)
+#   get_user_by_name(string)
+#   get_index_of_user(User)
