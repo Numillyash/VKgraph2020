@@ -1,15 +1,9 @@
-# Обьект класса User имеет:
-#   Поле name
-#   Поле id
-#   Поле friends (set друзей)
-#   Поле is_closed (закрыта ли страница)
-
 class User:
     def __init__(self, id=None, name=None, is_closed=False):
         self.id = id
         self.name = name
         self.is_closed = is_closed
-        self.friends = set()  # список друзей (классы user)
+        self.friends = set()
         self._friends_ids = []
 
     def __str__(self):
@@ -33,7 +27,6 @@ class User:
 _users_list = None
 
 
-# возращает массив всех пользователей
 def get_users():
     global _users_list
 
