@@ -3,7 +3,7 @@ from igraph_util import *
 
 users = get_users()
 clusters = get_clusters()
-print("Количество кластеров:", len(clusters))
+print("Количество классов:", len(clusters))
 
 answer = input("Введите id пользователя, либо имя и фамилию")
 if answer.isdigit():
@@ -19,6 +19,6 @@ else:
 
 for cluster in clusters:
     if target_user in cluster:
-        print("Размер текущего кластера:", len(cluster))
+        print("Размер текущего класса:", len(cluster))
         for user in cluster:
             print(user.name)
