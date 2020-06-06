@@ -42,10 +42,11 @@ _users_by_id = None
 
 
 # возвращает список всех пользователей
-def get_users():
+def get_users(include_outside_friends=False):
     global _users_list, _index_of_user, _users_by_id
 
     if _users_list is None:
+        filename = "users_with_outside_friends.dat" if include_outside_friends else "users.dat"
         file = open("users.dat", "r", encoding="utf-8")
         lines = file.readlines()
         file.close()
