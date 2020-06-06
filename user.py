@@ -82,7 +82,7 @@ def get_user_by_name(name):
         if user.name == name:
             return user
 
-    raise NameError("This name doesn't exist, or the person is not in FML 239 group")
+    raise NameError(f"Name {name} is incorrect, or the person is not in FML 239 group")
 
 
 # возвращает индекс юзера в массиве users

@@ -6,7 +6,7 @@ from urllib.request import urlopen
 # возращает словарь с данными из vkapi
 def vkapi_get_data(method, **kwargs):
     token = "b3776227b3776227b3776227fcb305108fbb377b3776227edadc2c9b6729a01af3db2fd"
-    url = f"https://api.vk.com/method/{method}?access_token={token}&v=5.107"
+    url = f"https://api.vk.com/method/{method}?access_token={token}&v=5.107&lang=ru"
 
     for key, value in kwargs.items():
         url += f"&{key}={value}"
