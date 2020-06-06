@@ -32,6 +32,7 @@ class User:
 
 _users_list = None
 
+
 # возращает массив всех пользователей
 def get_users():
     global _users_list

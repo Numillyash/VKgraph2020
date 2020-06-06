@@ -1,4 +1,6 @@
 # Task 3. Попробовать выделить классы (почти полные подграфы графа дружбы).
+from collections import defaultdict
+
 from user import *
 
 users = get_users()
@@ -36,10 +38,18 @@ for i in range(n):
         user2 = users[j]
 
         if user2 in user1.friends:
-            common_friends = set(user1.friends).intersection(set(user2.friends))
-            if len(common_friends) >= 10:
+            common_friends = user1.friends.intersection(user2.friends)
+            if len(common_friends) >= 40:
                 union_classes(i, j)
                 if classes_amount % 100 == 0:
                     print("now it's", classes_amount)
 
+classes = defaultdict(set)
+
+for i in range(n):
+    classes[find_class(i)].add(i)
+
 print("classes amount:", classes_amount, "n / 30:", n / 30)
+for class_list in classes.values():
+    if len(class_list) >= 5:
+        print([str(users[index]) for index in class_list])
