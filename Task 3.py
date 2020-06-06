@@ -6,12 +6,13 @@ clusters = get_clusters()
 print("length of clusters:", len(clusters))
 
 #target_user = get_user_by_name("Vsevolod Lavrov")  # 11-1 класс и матцентр 11 класса
-target_user = get_user_by_name("Daniil Grinchenko")  # параллель 10-х классов
+#target_user = get_user_by_name("Daniil Grinchenko")  # параллель 10-х классов
 #target_user = get_user_by_name("Roman Mikhaylov")  # часть 10-1 класса
 #target_user = get_user_by_name("Lev Leontyev")  # oops
+target_user = get_user_by_name("Georgy Ulanovsky")
 
 for cluster in clusters:
     if target_user in cluster:
-        print("size of cluster:", len(cluster))
+        print("size of current cluster:", len(cluster))
         for user in cluster:
             print(user.name)
