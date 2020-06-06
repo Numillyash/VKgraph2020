@@ -9,7 +9,7 @@ import pygraphviz as pgv
 
 graph = {}
 users_n = get_users()
-users = [users_n[i] for i in range(100)]
+users = users_n#[users_n[i] for i in range(50)]
 
 for user in users:
     graph[user.id] = [i.id for i in user.friends]
@@ -26,4 +26,4 @@ for i in graph:
             g.add_edge(i, j)
 #print(g.edges())
 #cool g.draw('file.png', prog = "circo")
-g.draw('file.png', prog = "twopi")
+g.draw('file.png', prog = "circo")
