@@ -19,7 +19,7 @@ class User:
         self._friends_ids = []
 
     def __str__(self):
-        return f"Name: {self.name}"
+        return self.name
 
     def __hash__(self):
         return id(self)
