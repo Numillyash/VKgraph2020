@@ -63,7 +63,7 @@ def get_users():
             _index_of_user[new_user] = i - 1
 
         for user in _users_list:
-            user.friends = set([_users_by_id[id] for id in user._friends_ids])
+            user.friends = set(_users_by_id[id] for id in user._friends_ids)
             del user._friends_ids
     return _users_list
 
@@ -81,6 +81,8 @@ def get_user_by_name(name):
     for user in _users_list:
         if user.name == name:
             return user
+
+    raise NameError("This name doesn't exist, or the person is not in FML 239 group")
 
 
 # возвращает индекс юзера в массиве users

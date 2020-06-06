@@ -27,5 +27,5 @@ def get_clusters():
     g = get_graph()
 
     clustering = leidenalg.find_partition(g, leidenalg.CPMVertexPartition)
-    user_clusters = [[users[index] for index in cluster] for cluster in clustering]
+    user_clusters = [set(users[index] for index in cluster) for cluster in clustering]
     return user_clusters
