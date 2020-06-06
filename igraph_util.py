@@ -1,6 +1,7 @@
 import leidenalg  # pip install leidenalg
 from igraph import *
 from user import *
+from collections import defaultdict
 
 
 def get_graph():
@@ -17,6 +18,14 @@ def get_graph():
     g.add_edges(edges)
     return g
 
+
+def get_degree_distribution():
+    users = get_users()
+    distribution = defaultdict(int)
+    for user in users:
+        distribution[len(user.friends)] += 1
+
+    return distribution
 
 # возвращает список кластеров. Каждый кластер - список юзеров
 def get_clusters():
