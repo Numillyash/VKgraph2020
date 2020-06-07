@@ -19,10 +19,10 @@ def get_member_ids():
     member_ids = []
     
     while True:
-        group_data = vkapi_get_data("groups.getMembers", group_id="fml239", offset=len(member_ids), count=1)
+        group_data = vkapi_get_data("groups.getMembers", group_id="fml239", offset=len(member_ids), count=1000)
         member_ids += group_data["items"]
     
-        if len(member_ids) == group_data["count"] or True:
+        if len(member_ids) == group_data["count"]:
             break
 
     print("Group members ids loaded")
