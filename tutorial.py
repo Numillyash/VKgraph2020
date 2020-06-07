@@ -1,8 +1,9 @@
 # Привет, это туториал по user
 from user import *  # импорт с файла user.py
 
-users = get_users()  # получаем список юзеров
-example_user = users[0]  # выбираем юзера
+users = get_users(False)  # получаем список юзеров
+# параметр True - также учитывать друзей участников группы
+example_user = get_user_by_id(6)  # выбираем юзера
 
 print("Name, id:", example_user.name, example_user.id)
 print("Printing friends")

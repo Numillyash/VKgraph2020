@@ -47,7 +47,7 @@ def get_users(include_outside_friends=False):
 
     if _users_list is None:
         filename = "users_with_outside_friends.dat" if include_outside_friends else "users.dat"
-        file = open("users.dat", "r", encoding="utf-8")
+        file = open(filename, "r", encoding="utf-8")
         lines = file.readlines()
         file.close()
 

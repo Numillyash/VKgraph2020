@@ -19,10 +19,10 @@ def get_member_ids():
     member_ids = []
     
     while True:
-        group_data = vkapi_get_data("groups.getMembers", group_id="fml239", offset=len(member_ids), count=1000)
+        group_data = vkapi_get_data("groups.getMembers", group_id="fml239", offset=len(member_ids), count=1)
         member_ids += group_data["items"]
     
-        if len(member_ids) == group_data["count"]:
+        if len(member_ids) == group_data["count"] or True:
             break
 
     print("Group members ids loaded")
@@ -46,7 +46,7 @@ def get_member_ids():
 def get_user_data(member_ids):
     user_data_list = []
     for i in range(0, len(member_ids), 250):
-        request_str = ",".join(map(str, member_ids[i : i + 100]))
+        request_str = ",".join(map(str, member_ids[i : i + 250]))
         user_data_list += vkapi_get_data("users.get", user_ids=request_str)
     
         if len(user_data_list) % 500 == 0:
@@ -65,7 +65,7 @@ def create_users(member_ids, user_data_list, outside_friends):
         user_id = user_data["id"]
         if "deactivated" in user_data:
             member_ids.remove(user_id)
-            outside_friends.remove(user_id)
+            outside_friends.discard(user_id)
             continue
     
         user_name = user_data["first_name"] + " " + user_data["last_name"]
