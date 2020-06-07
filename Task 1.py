@@ -5,6 +5,7 @@ from random import random
 import matplotlib.pyplot as plt
 import numpy as np
 import math
+from igraph_util import *
 users = get_users()
 #example_user = users[0]
 
@@ -33,16 +34,23 @@ d = {names[i]: kolvos[i] for i in range(len(kolvos))}
 itog_list = sorted(d, key=d.get, reverse=True)
 ans = [itog_list[i] for i in range(20)]
 print(ans)
-rng = np.arange(1001)
 
-xAxe = rng / 1000
-aller = xAxe*5
+dabs = get_degree_distribution()
+
+s = dict(sorted(dabs.items()))
+
+keys = list(s.keys())
+keys.pop(0)
+values = list(s.values())
+values.pop(0)
+
 fig, ax = plt.subplots(figsize=(5, 3))
-ax.stackplot(xAxe, aller)
-ax.set_title('Вероятность ребра')
-ax.legend(loc='upper left')
-ax.set_ylabel('Вероятность связности')
-ax.set_xlim(xmin=xAxe[0], xmax=xAxe[-1])
+ax.stackplot(keys, values)
+ax.set_title('Гистограмма кол-ва друзей')
+ax.set_ylabel('Кол-во людей')
+ax.set_xlabel('Кол-во друзей')
+ax.set_xlim(xmin=keys[0], xmax=300)#keys[-1])
+ax.set_ylim(ymin=values[-1], ymax=500)#values[0])
 fig.tight_layout()
 
 plt.show()
