@@ -3,14 +3,14 @@ import json
 from urllib.request import urlopen
 
 
-include_outside_friends = False  # друзья участников группы тоже рассматриваются
+include_outside_friends = True  # друзья участников группы тоже рассматриваются
 
 
 # главная функция
 def parse_and_save_users():
-    member_ids = get_member_ids()
+    member_ids, outside_friends = get_member_ids()
     user_data_list = get_user_data(member_ids)
-    user_list = create_users(member_ids, user_data_list)
+    user_list = create_users(member_ids, user_data_list, outside_friends)
     save_to_file(user_list)
 
 
@@ -24,21 +24,28 @@ def get_member_ids():
     
         if len(member_ids) == group_data["count"]:
             break
-    
-    if include_outside_friends:
-        member_ids_set = set(member_ids)
+
+    print("Group members ids loaded")
+
+    outside_friends = set()
+    if include_outside_friends:  # добавляем в группу также друзей участников группы
+        progress_cnt = 0
+
         for id in member_ids:
-            member_ids_set.update(get_friends_ids(id))
-        member_ids = list(member_ids_set)
+            outside_friends.update(get_friends_ids(id))
+            progress_cnt += 1
+            if progress_cnt % 100 == 0:
+                print("Included outside friends for", progress_cnt)
 
+        member_ids = list(set(member_ids).union(outside_friends))
 
-    return member_ids
+    return member_ids, outside_friends
 
 
 # получить информацию об участниках группы
 def get_user_data(member_ids):
     user_data_list = []
-    for i in range(0, len(member_ids), 100):
+    for i in range(0, len(member_ids), 250):
         request_str = ",".join(map(str, member_ids[i : i + 100]))
         user_data_list += vkapi_get_data("users.get", user_ids=request_str)
     
@@ -50,7 +57,7 @@ def get_user_data(member_ids):
 
 
 # создать объекты класса user
-def create_users(member_ids, user_data_list):
+def create_users(member_ids, user_data_list, outside_friends):
     user_list = []
     user_by_id = {}
     
@@ -58,6 +65,7 @@ def create_users(member_ids, user_data_list):
         user_id = user_data["id"]
         if "deactivated" in user_data:
             member_ids.remove(user_id)
+            outside_friends.remove(user_id)
             continue
     
         user_name = user_data["first_name"] + " " + user_data["last_name"]
@@ -66,12 +74,13 @@ def create_users(member_ids, user_data_list):
         new_user = User(user_id, user_name, is_closed)
         user_list.append(new_user)
         user_by_id[new_user.id] = new_user
-    
-    
+
     # загружаем друзей пользователей
     friends_loaded = 0
     for user in user_list:
         if user.is_closed:
+            continue
+        if user.id in outside_friends:
             continue
         friends_ids = get_friends_ids(user.id)
         # загружаем друзей только из группы
@@ -79,8 +88,7 @@ def create_users(member_ids, user_data_list):
         friends_loaded += 1
         if friends_loaded % 100 == 0:
             print(f"Loaded friends for {friends_loaded} users")
-    
-    
+
     # проверяем, что всегда есть обратное ребро
     for user in user_list:
         for friend_id in user._friends_ids:
