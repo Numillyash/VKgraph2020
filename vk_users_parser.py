@@ -3,13 +3,14 @@ import json
 from urllib.request import urlopen
 
 
-include_outside_friends = True  # друзья участников группы тоже рассматриваются
+include_outside_friends = False  # друзья участников группы тоже рассматриваются
 
 
 # главная функция
 def parse_and_save_users():
     member_ids, outside_friends = get_member_ids()
     user_data_list = get_user_data(member_ids)
+    member_ids = set(member_ids)
     user_list = create_users(member_ids, user_data_list, outside_friends)
     save_to_file(user_list)
 
@@ -37,6 +38,9 @@ def get_member_ids():
             if progress_cnt % 100 == 0:
                 print("Included outside friends for", progress_cnt)
 
+        for id in member_ids:
+            outside_friends.discard(id)
+
         member_ids = list(set(member_ids).union(outside_friends))
 
     return member_ids, outside_friends
@@ -45,11 +49,12 @@ def get_member_ids():
 # получить информацию об участниках группы
 def get_user_data(member_ids):
     user_data_list = []
-    for i in range(0, len(member_ids), 250):
-        request_str = ",".join(map(str, member_ids[i : i + 250]))
+    user_data_iteration = 250
+    for i in range(0, len(member_ids), user_data_iteration):
+        request_str = ",".join(map(str, member_ids[i : i + user_data_iteration]))
         user_data_list += vkapi_get_data("users.get", user_ids=request_str)
     
-        if len(user_data_list) % 500 == 0:
+        if len(user_data_list) % 1000 == 0:
             print(f"Loaded {len(user_data_list)} user names")
     
     print("User names have been loaded")
@@ -74,6 +79,8 @@ def create_users(member_ids, user_data_list, outside_friends):
         new_user = User(user_id, user_name, is_closed)
         user_list.append(new_user)
         user_by_id[new_user.id] = new_user
+        if len(user_list) % 10000 == 0:
+            print(f"Created {len(user_list)} users")
 
     # загружаем друзей пользователей
     friends_loaded = 0
@@ -88,7 +95,7 @@ def create_users(member_ids, user_data_list, outside_friends):
         friends_loaded += 1
         if friends_loaded % 100 == 0:
             print(f"Loaded friends for {friends_loaded} users")
-
+    print("Total friends loaded:", friends_loaded)
     # проверяем, что всегда есть обратное ребро
     for user in user_list:
         for friend_id in user._friends_ids:
