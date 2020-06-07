@@ -52,5 +52,5 @@ ax.set_xlabel('Кол-во друзей')
 ax.set_xlim(xmin=keys[0], xmax=300)#keys[-1])
 ax.set_ylim(ymin=values[-1], ymax=500)#values[0])
 fig.tight_layout()
-
+plt.savefig('Gist.png', format='png', dpi=1000)
 plt.show()
