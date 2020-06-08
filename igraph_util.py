@@ -17,6 +17,15 @@ def get_graph(users):
     return g
 
 
+# возвращает список кластеров. Каждый кластер - список юзеров
+def get_clusters(users=get_users()):
+    g = get_graph(users)
+
+    clustering = leidenalg.find_partition(g, leidenalg.CPMVertexPartition)
+    user_clusters = [set(users[index] for index in cluster) for cluster in clustering]
+    return user_clusters
+
+
 def get_degree_distribution():
     users = get_users()
     distribution = defaultdict(int)
@@ -25,10 +34,4 @@ def get_degree_distribution():
 
     return distribution
 
-# возвращает список кластеров. Каждый кластер - список юзеров
-def get_clusters(users=get_users()):
-    g = get_graph(users)
 
-    clustering = leidenalg.find_partition(g, leidenalg.CPMVertexPartition)
-    user_clusters = [set(users[index] for index in cluster) for cluster in clustering]
-    return user_clusters

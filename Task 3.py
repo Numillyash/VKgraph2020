@@ -1,7 +1,6 @@
 # Task 3. Попробовать выделить классы (почти полные подграфы графа дружбы).
 from igraph_util import *
 
-users = get_users()
 clusters = get_clusters()
 print("Количество классов:", len(clusters))
 
