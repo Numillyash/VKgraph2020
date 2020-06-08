@@ -3,7 +3,7 @@ import json
 from urllib.request import urlopen
 
 
-include_outside_friends = False  # друзья участников группы тоже рассматриваются
+include_outside_friends = False  # рассматриваются ли также друзья участников группы
 
 
 # главная функция

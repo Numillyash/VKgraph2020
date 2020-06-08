@@ -33,7 +33,7 @@ d = {names[i]: kolvos[i] for i in range(len(kolvos))}
 
 itog_list = sorted(d, key=d.get, reverse=True)
 ans = [itog_list[i] for i in range(20)]
-print(ans)
+print(", ".join(ans))
 
 dabs = get_degree_distribution()
 
