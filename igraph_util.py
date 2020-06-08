@@ -4,9 +4,7 @@ from user import *
 from collections import defaultdict
 
 
-def get_graph():
-    users = get_users()
-
+def get_graph(users):
     g = Graph()
     g.add_vertices(len(users))
 
@@ -28,9 +26,8 @@ def get_degree_distribution():
     return distribution
 
 # возвращает список кластеров. Каждый кластер - список юзеров
-def get_clusters():
-    users = get_users()
-    g = get_graph()
+def get_clusters(users=get_users()):
+    g = get_graph(users)
 
     clustering = leidenalg.find_partition(g, leidenalg.CPMVertexPartition)
     user_clusters = [set(users[index] for index in cluster) for cluster in clustering]
