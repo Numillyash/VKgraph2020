@@ -36,52 +36,62 @@ class User:
         self._friends_ids = list(map(int, fields[3:-1]))
 
 
-_users_list = None
-_index_of_user = None
-_users_by_id = None
-_include_outside_friends = None
+# для каждой переменной есть две версии: без внешних друзей, и с внешними друзьями
+_users_list = [None, None]
+_index_of_user = [None, None]
+_users_by_id = [None, None]
 
 
 # возвращает список всех пользователей
 def get_users(include_outside_friends=False):
-    global _users_list, _index_of_user, _users_by_id, _include_outside_friends
+    global _users_list, _index_of_user, _users_by_id
+    index = int(include_outside_friends)
 
-    if _users_list is None or _include_outside_friends != include_outside_friends:
+    if _users_list[index] is None:
         filename = "users_with_outside_friends.dat" if include_outside_friends else "users.dat"
         file = open(filename, "r", encoding="utf-8")
         lines = file.readlines()
         file.close()
 
-        _users_list = []
-        _users_by_id = {}
-        _index_of_user = {}
-        _include_outside_friends = include_outside_friends
+        users_list = []
+        users_by_id = {}
+        index_of_user = {}
         users_amount = int(lines[0])
 
         for i in range(1, users_amount + 1):
             new_user = User()
             new_user._load(lines[i])
-            _users_list.append(new_user)
-            _users_by_id[new_user.id] = new_user
-            _index_of_user[new_user] = i - 1
+            users_list.append(new_user)
+            users_by_id[new_user.id] = new_user
+            index_of_user[new_user] = i - 1
 
-        for user in _users_list:
-            user.friends = set(_users_by_id[id] for id in user._friends_ids)
+        for user in users_list:
+            user.friends = set(users_by_id[id] for id in user._friends_ids)
             del user._friends_ids
+
+        _users_list[index] = users_list
+        _users_by_id[index] = users_by_id
+        _index_of_user[index] = index_of_user
+
     return _users_list
 
 
 # возвращает юзера по id вконтакте
-def get_user_by_id(id):
-    return _users_by_id[id]
+def get_user_by_id(id, include_outside_friends=False):
+    index = int(include_outside_friends)
+    if _users_list[index] is None:
+        get_users(include_outside_friends)
+
+    return _users_by_id[int(include_outside_friends)][id]
 
 
 # возращает юзера по имени вконтакте
-def get_user_by_name(name):
-    if _users_list is None:
+def get_user_by_name(name, include_outside_friends=False):
+    index = int(include_outside_friends)
+    if _users_list[index] is None:
         get_users()
 
-    for user in _users_list:
+    for user in _users_list[index]:
         if user.name == name:
             return user
 
@@ -89,5 +99,5 @@ def get_user_by_name(name):
 
 
 # возвращает индекс юзера в массиве users
-def get_index_of_user(user):
-    return _index_of_user[user]
+def get_index_of_user(user, include_outside_friends=False):
+    return _index_of_user[int(include_outside_friends)][user]
