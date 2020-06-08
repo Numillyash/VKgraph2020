@@ -1,14 +1,14 @@
 # Привет, это туториал по user
 from user import *  # импорт с файла user.py
 
-users = get_users(False)  # получаем список юзеров
+users = get_users()  # получаем список юзеров
 # параметр True - также учитывать друзей участников группы
 example_user = get_user_by_id(6)  # выбираем юзера
 
 print("Name, id:", example_user.name, example_user.id)
 print("Printing friends")
 for friend in example_user.friends:
-    print("friend:", friend.name)
+    print(friend.name)
 
 # обьект класса User имеет:
 #   Поле name
