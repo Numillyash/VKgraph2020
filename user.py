@@ -39,13 +39,14 @@ class User:
 _users_list = None
 _index_of_user = None
 _users_by_id = None
+_include_outside_friends = None
 
 
 # возвращает список всех пользователей
 def get_users(include_outside_friends=False):
-    global _users_list, _index_of_user, _users_by_id
+    global _users_list, _index_of_user, _users_by_id, _include_outside_friends
 
-    if _users_list is None:
+    if _users_list is None or _include_outside_friends != include_outside_friends:
         filename = "users_with_outside_friends.dat" if include_outside_friends else "users.dat"
         file = open(filename, "r", encoding="utf-8")
         lines = file.readlines()
@@ -54,6 +55,7 @@ def get_users(include_outside_friends=False):
         _users_list = []
         _users_by_id = {}
         _index_of_user = {}
+        _include_outside_friends = include_outside_friends
         users_amount = int(lines[0])
 
         for i in range(1, users_amount + 1):
