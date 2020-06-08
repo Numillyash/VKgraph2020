@@ -73,7 +73,7 @@ def get_users(include_outside_friends=False):
         _users_by_id[index] = users_by_id
         _index_of_user[index] = index_of_user
 
-    return _users_list
+    return _users_list[index]
 
 
 # возвращает юзера по id вконтакте
