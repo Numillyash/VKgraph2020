@@ -44,13 +44,19 @@ keys.pop(0)
 values = list(s.values())
 values.pop(0)
 
-fig, ax = plt.subplots(figsize=(5, 3))
-ax.stackplot(keys, values)
+x_val = [i for i in range(1,1000)]
+y_val = [5115.49697848*(x**-1.502028) for x in x_val]
+
+fig, ax = plt.subplots(figsize=(10, 6))
+ax.plot(keys, values, label="Значения")
+ax.plot(x_val, y_val, c='red', label="Степенная функция\nf(x)=5115.497*x^-1.502")
 ax.set_title('Гистограмма кол-ва друзей')
 ax.set_ylabel('Кол-во людей')
 ax.set_xlabel('Кол-во друзей')
 ax.set_xlim(xmin=keys[0], xmax=300)#keys[-1])
 ax.set_ylim(ymin=values[-1], ymax=500)#values[0])
+ax.legend()
+
 fig.tight_layout()
 plt.savefig('Gist.png', format='png', dpi=1000)
 plt.show()
